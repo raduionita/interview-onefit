@@ -41,5 +41,7 @@ You are working at a crossfit box and need to design a workout-of-the-day progra
 - randomizes exercises order, so you get a new workout pattern every time
 - start workout: in a `do..while` loop try (based on some rules) to add an new exercise for an user
 - the result is printed as a json or text
+- main logic is in `Workout::start()` + `Workout::assign` and `extend Rule` classes
+- as of yet, there are not tests, and not much testing was done 
 - run: `./generator.php -f members.txt -o text` 
 - run: `./generator.php -f members.txt -o text -vvv` in debug mode :)

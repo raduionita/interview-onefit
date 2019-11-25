@@ -45,7 +45,7 @@ error_reporting(E_ALL);
 
 // output
     // 00:00 - 01:00 Camille will do jumping jacks, Michael pushups, Tom will do front squat, Tim will do sprints Erik will do pull ups, Lars will do
-    // 01:00 - 02:00 - Camille will do front squat, Michael short sprints, Tom will do rings, Tim will do rings, Erik will do sprints
+    // 01:00 - 02:00 Camille will do front squat, Michael short sprints, Tom will do rings, Tim will do rings, Erik will do sprints
     // ...
     // 25:00 - 26:00 Camille will take a break, Michael short sprints, Tom will rings, Tim will take a break, Erik will do handstand practise, Lars pullups, Mathijs will take a break
     // ...
