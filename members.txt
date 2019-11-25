@@ -1,0 +1,8 @@
+#member|biginner?
+Camille|no
+Michael|no
+Tom|yes
+Tim|no
+Erik|no
+Lars|no
+Mathijs|yes
