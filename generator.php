@@ -548,52 +548,65 @@ class Workout
     public function start() : Result
     {
         Logger::dbg(__METHOD__);
-        
         // rand members // so u don't get the same exercise pattern everytime
         shuffle($this->members);
-        
         // for each member
         foreach ($this->members as &$member) {
             $program = new Program($this->length, $this);
             // set members program
             $member->setProgram($program);
-            
             // add breaks
             $keys = array_fill(0,$member->isBeginner() ? 4 : 2, 'BR'); // BR
             do {
                 $done     = false;
                 $key      = current($keys);
                 $exercise = &$this->exercises[$key];
+                // try to assign a brake
                 if ($this->assign($program, $exercise, $member)) {
                     $done = !next($keys);
                 }
             } while (!$done);
-            
+            // done w/ breaks...this is where the actual exercise assignment starts
             // add exercises, filter-out break
             $keys = array_filter(array_keys($this->exercises), function ($key) { return $key !== Exercise::BREAK; });
             // shuffle the array - so that each member gets a different pattern
             shuffle($keys); // ['JJ','PS','FS','BS','PL','RG','SS','HP','JR'];
+            // cache this, so we dont run the count function in 2billion times inside the do{}while loop
+            $l = count($keys);
             do {
                 $done = false;
+                // current $key // 'FS'
                 $key  = current($keys);
+                // needed for swap-randomizer
+                $i    = key($keys);
+                // start over if at the end of the $keys array
                 next($keys) || reset($keys);
-                
+                // who's next...
                 $exercise = &$this->exercises[$key];
+                // try to assign exercise to program for that member
                 if ($this->assign($program, $exercise, $member)) {
+                    // done, only if program has all time slots assigned
                     $done = $program->isComplete();
+                } else {
+                  // swap // make this even more complex...cause why not
+                  $r   = $i === $l-1 ? rand(0, $i-1) : rand($i, $l-1);
+                  $tmp = $keys[$i];
+                  $keys[$i] = $keys[$r];
+                  $keys[$r] = $tmp;
                 }
             } while (!$done);
         }
-    
+        // for the output
         $result = new Result;
-    
+        // add calendar to result - did it this way to permite extension 
         foreach ($this->calendar as $t => $c) {
+            // objects/classes more reliable than arrays with who-knows-what in them 
             foreach ($c as  $pair) {
                 /** @var Pair $pair */
                 $result->insert($t, $pair->member->getName(), $pair->exercise->getInfo());
             }
         }
-        
+        // return the result, duh...
         return $result;
     }
 }
